@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>胶合透镜焦距计算器</title>
+    <style>
+        .container { max-width: 1000px; margin: 20px auto; padding: 20px; }
+        .input-table, .result-table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        input { width: 100%; padding: 5px; }
+        .highlight { background-color: #f0f8ff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>胶合透镜总焦距计算器</h2>
+        
+        <!-- 输入参数表格 -->
+        <table class="input-table">
+            <tr>
+                <th colspan="2">透镜1参数</th>
+                <th colspan="2">透镜2参数</th>
+            </tr>
+            <tr>
+                <td>r1 (mm):</td>
+                <td><input type="number" id="r1" step="0.001" value="120.680"></td>
+                <td>r3 (mm):</td>
+                <td><input type="number" id="r3" step="0.001" value="35.450"></td>
+            </tr>
+            <tr>
+                <td>n1:</td>
+                <td><input type="number" id="n1" step="0.001" value="1.762"></td>
+                <td>n2:</td>
+                <td><input type="number" id="n2" step="0.001" value="1.623"></td>
+            </tr>
+            <tr>
+                <td>r2 (mm):</td>
+                <td><input type="number" id="r2" step="0.001" value="35.450"></td>
+                <td>r4 (mm):</td>
+                <td><input type="number" id="r4" step="0.001" value="-49.34"></td>
+            </tr>
+            <tr>
+                <td>d1 (mm):</td>
+                <td><input type="number" id="d1" step="0.001" value="3.00"></td>
+                <td>d2 (mm):</td>
+                <td><input type="number" id="d2" step="0.001" value="8.00"></td>
+            </tr>
+        </table>
+
+        <!-- 计算按钮 -->
+        <button onclick="calculate()">计算总焦距</button>
+
+        <!-- 结果表格 -->
+        <table class="result-table">
+            <tr>
+                <th>中间参数</th>
+                <th>数值 (mm)</th>
+                <th>公式</th>
+            </tr>
+            <tr>
+                <td>f1</td>
+                <td id="f1" class="highlight"></td>
+                <td>公式1</td>
+            </tr>
+            <tr>
+                <td>h2</td>
+                <td id="h2" class="highlight"></td>
+                <td>公式2</td>
+            </tr>
+            <tr>
+                <td>f2</td>
+                <td id="f2" class="highlight"></td>
+                <td>公式3</td>
+            </tr>
+            <tr>
+                <td>h3</td>
+                <td id="h3" class="highlight"></td>
+                <td>公式4</td>
+            </tr>
+            <tr>
+                <td>d</td>
+                <td id="d" class="highlight"></td>
+                <td>公式5</td>
+            </tr>
+            <tr>
+                <td>总焦距 f</td>
+                <td id="total_f" class="highlight"></td>
+                <td>公式6</td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        // 公式1: 计算f1（修正分母）
+        function calcF1() {
+            const n1 = parseFloat(document.getElementById('n1').value);
+            const r1 = parseFloat(document.getElementById('r1').value);
+            const r2 = parseFloat(document.getElementById('r2').value);
+            const d1 = parseFloat(document.getElementById('d1').value);
+            const numerator = n1 * r1 * r2;
+            const term = (r2 - r1) + ((n1 - 1) * d1) / n1;
+            const denominator = (n1 - 1) * term;
+            return numerator / denominator;
+        }
+
+        // 公式2: 计算h2（修正为r2）
+        function calcH2(f1) {
+            const n1 = parseFloat(document.getElementById('n1').value);
+            const r2 = parseFloat(document.getElementById('r2').value);
+            const d1 = parseFloat(document.getElementById('d1').value);
+            return f1 * (n1 - 1) * (d1 / (r2 * n
